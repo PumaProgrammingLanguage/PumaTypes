@@ -29,6 +29,11 @@ namespace Types
 
     String::String(const char* cstr) noexcept
     {
+		initialize(cstr);
+    }
+
+	void String::initialize(const char* cstr) noexcept
+    {
         if (!cstr)
         {
             // Treat null as empty short string
@@ -78,13 +83,29 @@ namespace Types
     // Destructor: free heap storage for long strings if owned
     String::~String() noexcept
     {
-        if (isLong() && longStr.ptr != nullptr)
+        Finalize();
+    }
+
+    // delete the long string buffer if any
+    // zero the long or short size
+    void String::Finalize() noexcept
+    {
+        if (isLong())
         {
-            delete[] longStr.ptr;
-            // Leave union in a benign state (optional)
-            longStr.ptr = nullptr;
+
+            if (longStr.ptr != nullptr)
+            {
+                delete[] longStr.ptr;
+                longStr.ptr = nullptr;
+            }
+            // Leave union in a benign state
             longStr.size = 0;
             longStr.tag = 0;
+        }
+        else
+        {
+            // Leave union in a benign state
+            shortStr.tag = 0;
         }
     }
 

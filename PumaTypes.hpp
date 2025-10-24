@@ -31,16 +31,20 @@ namespace Types
         // Helpers (private) - lowerCamelCase
         bool isShort() const noexcept;
         bool isLong()  const noexcept;
+		void initialize(const char* cstr) noexcept;
 
     public:
         // Public API
-        std::size_t Size() const noexcept;
-
         // Construct from a null-terminated C string
         explicit String(const char* cstr) noexcept;
+		// Destructor: free heap storage for long strings if owned
+		~String() noexcept;
 
-        // Destructor: releases heap storage for long strings.
-        ~String() noexcept;
+        std::size_t Size() const noexcept;
+
+        // Releases heap storage for long strings.
+        // zero the size
+        void Finalize() noexcept;
 
         // Move semantics: transfer ownership of long-string storage.
         String(String&& other) noexcept;
