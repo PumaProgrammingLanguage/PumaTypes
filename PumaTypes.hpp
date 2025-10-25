@@ -31,28 +31,20 @@ namespace Types
         // Helpers (private) - lowerCamelCase
         bool isShort() const noexcept;
         bool isLong()  const noexcept;
-		void initialize(const char* cstr) noexcept;
 
     public:
         // Public API
-        // Construct from a null-terminated C string
-        explicit String(const char* cstr) noexcept;
-		// Destructor: free heap storage for long strings if owned
-		~String() noexcept;
+        std::uint32_t Size() const noexcept;
 
-        std::size_t Size() const noexcept;
+		// String factory, Initializes from a C-style string and returns the initialized string.
+        // if cstr is null, return short empty string
+        String initialize(const char* cstr = NULL) noexcept;
 
-        // Releases heap storage for long strings.
-        // zero the size
-        void Finalize() noexcept;
+        // If is owner, releases heap storage for long strings.
+		// Set to short empty string
+        void Finalize(bool isOwner = false) noexcept;
 
-        // Move semantics: transfer ownership of long-string storage.
-        String(String&& other) noexcept;
-        String& operator=(String&& other) noexcept;
-
-        // Disallow copying to avoid double-free or leaks for long strings.
-        String(const String&) = delete;
-        String& operator=(const String&) = delete;
+        String operator=(String other) noexcept;
     };
 #pragma pack(pop)
 
