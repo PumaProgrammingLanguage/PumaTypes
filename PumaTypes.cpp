@@ -9,172 +9,96 @@
 namespace Puma {
 namespace Types
 {
-    // private helpers (renamed to lowerCamelCase)
+	// test for short string
     bool String::isShort() const noexcept
     {
         return (shortStr.tag & SHORT_MASK) == 0;
     }
 
+	// test for long string
     bool String::isLong() const noexcept
     {
         return (longStr.tag & LONG_MASK) != 0;
     }
 
-    std::size_t String::Size() const noexcept
+	// get length
+    std::uint32_t String::Length() const noexcept
     {
         return isShort()
-            ? static_cast<std::size_t>(shortStr.tag & SIZE_MASK)
-            : static_cast<std::size_t>(longStr.size);
+            ? static_cast<std::uint32_t>(shortStr.tag & LENGTH_MASK)
+            : static_cast<std::uint32_t>(longStr.length);
     }
 
-    String::String(const char* cstr) noexcept
+	// Initialize from C-style string or create empty string
+    void String::Initialize(const char* cstr) noexcept
     {
-		initialize(cstr);
-    }
+        // zero the string - this creates an empty string
+        str.firstHalf = 0;
+        str.secondHalf = 0;
 
-	void String::initialize(const char* cstr) noexcept
-    {
         if (!cstr)
         {
-            // Treat null as empty short string
-            shortStr.tag = 0;
-            std::memset(shortStr.data, 0, sizeof(shortStr.data));
+			// return empty string
             return;
         }
+ 
+        const std::size_t length = std::strlen(cstr);
 
-        const std::size_t len = std::strlen(cstr);
-
-        if (len <= 15)
+        if (length <= 15)
         {
             // Short string
-            shortStr.tag = static_cast<std::uint8_t>(len & SIZE_MASK); // MSB stays 0
-            std::memset(shortStr.data, 0, sizeof(shortStr.data));
-            if (len > 0)
+            // MSB stays 0
+            shortStr.tag = static_cast<std::uint8_t>(length & LENGTH_MASK);
+            if (length > 0)
             {
-                std::memcpy(shortStr.data, cstr, len);
+                std::memcpy(shortStr.data, cstr, length);
             }
+			// else empty string
         }
         else
         {
             // Long string
             longStr.tag = LONG_MASK; // set MSB=1
-            longStr.size = static_cast<std::uint32_t>(len);
-            longStr.reserved[0] = longStr.reserved[1] = longStr.reserved[2] = 0;
-        #if INTPTR_MAX == INT32_MAX
-            longStr.reserved2 = 0;
-        #endif
+            longStr.length = static_cast<std::uint32_t>(length);
 
-            char* buf = new (std::nothrow) char[len]; // no terminator stored
+            char* buf = new (std::nothrow) char[length]; // no terminator stored
             if (buf)
             {
-                std::memcpy(buf, cstr, len);
+                std::memcpy(buf, cstr, length);
                 // Store pointer directly; width matches platform.
                 longStr.ptr = buf;
             }
             else
             {
-                // Allocation failed: fall back to empty short
-                shortStr.tag = 0;
-                std::memset(shortStr.data, 0, sizeof(shortStr.data));
+                // Allocation failed: fall back to empty string
+                str.firstHalf = 0;
+                str.secondHalf = 0;
             }
         }
-    }
 
-    // Destructor: free heap storage for long strings if owned
-    String::~String() noexcept
-    {
-        Finalize();
+		return;
     }
 
     // delete the long string buffer if any
-    // zero the long or short size
-    void String::Finalize() noexcept
+    // zero the long or short length
+    void String::Finalize(bool isOwner) noexcept
     {
-        if (isLong())
-        {
-
-            if (longStr.ptr != nullptr)
-            {
-                delete[] longStr.ptr;
-                longStr.ptr = nullptr;
-            }
-            // Leave union in a benign state
-            longStr.size = 0;
-            longStr.tag = 0;
-        }
-        else
-        {
-            // Leave union in a benign state
-            shortStr.tag = 0;
-        }
-    }
-
-    // Move constructor: steal pointer/metadata; null out source
-    String::String(String&& other) noexcept
-    {
-        if (other.isShort())
-        {
-            shortStr.tag = other.shortStr.tag;
-            std::memcpy(shortStr.data, other.shortStr.data, sizeof(shortStr.data));
-        }
-        else
-        {
-            longStr.tag = other.longStr.tag;
-            longStr.reserved[0] = other.longStr.reserved[0];
-            longStr.reserved[1] = other.longStr.reserved[1];
-            longStr.reserved[2] = other.longStr.reserved[2];
-            longStr.size = other.longStr.size;
-        #if INTPTR_MAX == INT32_MAX
-            longStr.reserved2 = other.longStr.reserved2;
-        #endif
-            longStr.ptr = other.longStr.ptr;
-
-            // Release source ownership
-            other.longStr.ptr = nullptr;
-            other.longStr.size = 0;
-            other.longStr.tag = 0;
-        }
-    }
-
-    // Move assignment: free current, then steal from source; null out source
-    String& String::operator=(String&& other) noexcept
-    {
-        if (this == &other)
-            return *this;
-
-        // Release current owned buffer if any
-        if (isLong() && longStr.ptr != nullptr)
+		if (isOwner && isLong() && longStr.ptr != nullptr)
         {
             delete[] longStr.ptr;
-            longStr.ptr = nullptr;
-            longStr.size = 0;
-            longStr.tag = 0;
         }
+		// Set to empty string
+        str.firstHalf = 0;
+		str.secondHalf = 0;
+    }
 
-        if (other.isShort())
-        {
-            shortStr.tag = other.shortStr.tag;
-            std::memcpy(shortStr.data, other.shortStr.data, sizeof(shortStr.data));
-        }
-        else
-        {
-            longStr.tag = other.longStr.tag;
-            longStr.reserved[0] = other.longStr.reserved[0];
-            longStr.reserved[1] = other.longStr.reserved[1];
-            longStr.reserved[2] = other.longStr.reserved[2];
-            longStr.size = other.longStr.size;
-        #if INTPTR_MAX == INT32_MAX
-            longStr.reserved2 = other.longStr.reserved2;
-        #endif
-            longStr.ptr = other.longStr.ptr;
-
-            // Release source ownership
-            other.longStr.ptr = nullptr;
-            other.longStr.size = 0;
-            other.longStr.tag = 0;
-        }
-
-        return *this;
+    // Assignment
+    // if lvalue is owner, call finalize before the assignment
+    void String::operator=(String other) noexcept
+    {
+        str.firstHalf = other.str.firstHalf;
+		str.secondHalf = other.str.secondHalf;
+		return;
     }
 } // namespace Types
 } // namespace Puma
