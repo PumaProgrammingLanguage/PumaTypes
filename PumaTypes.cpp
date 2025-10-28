@@ -21,66 +21,124 @@ namespace Types
         return (longStr.tag & LONG_MASK) != 0;
     }
 
-	// get length
+
+    // get str length - number of characters (code points)
     std::uint32_t String::Length() const noexcept
+    {
+		uint32_t charCount = 0;
+        const char* ptr;
+        if (isShort())
+        {
+            ptr = shortStr.data;
+        }
+        else
+        {
+            ptr = longStr.ptr;
+		}
+
+		const std::uint32_t strSize = StrSize();
+		for (std::uint32_t i = 0; i < strSize; )
+		{
+			unsigned char c = static_cast<unsigned char>(ptr[i]);
+			if ((c & 0x80) == 0)
+			{
+				// 1-byte character (ASCII)
+				i += 1;
+			}
+			else if ((c & 0xE0) == 0xC0)
+			{
+				// 2-byte character
+				i += 2;
+			}
+			else if ((c & 0xF0) == 0xE0)
+			{
+				// 3-byte character
+				i += 3;
+			}
+			else if ((c & 0xF8) == 0xF0)
+			{
+				// 4-byte character
+				i += 4;
+			}
+			else
+			{
+				// Invalid UTF-8 byte sequence counts as a single character
+				i += 1;
+			}
+			charCount++;
+		}
+		// return number of valid character found
+        return charCount;
+	}
+
+    // get str size - number of bytes used to store the string buffer
+    std::uint32_t String::StrSize() const noexcept
     {
         return isShort()
             ? static_cast<std::uint32_t>(shortStr.tag & LENGTH_MASK)
-            : static_cast<std::uint32_t>(longStr.length);
+            : static_cast<std::uint32_t>(longStr.strSize);
     }
 
-	// Initialize from C-style string or create empty string
-    void String::Initialize(const char* cstr) noexcept
+    // get variable size - number of bytes used to store the variable
+    std::uint32_t String::VarSize() const noexcept
     {
+        return sizeof(String);
+	}
+
+    // String factory, initializes from a C-style string and returns the initialized string.
+    // if cstr is null, return empty string
+    String String::initialize(const char* cstr) noexcept
+    {
+		String newStr;
         // zero the string - this creates an empty string
-        str.firstHalf = 0;
-        str.secondHalf = 0;
+        newStr.str.firstHalf = 0;
+        newStr.str.secondHalf = 0;
 
         if (!cstr)
         {
 			// return empty string
-            return;
+            return newStr;
         }
  
-        const std::size_t length = std::strlen(cstr);
+        const std::size_t strSize = std::strlen(cstr);
 
-        if (length <= 15)
+        if (strSize <= 15)
         {
             // Short string
             // MSB stays 0
-            shortStr.tag = static_cast<std::uint8_t>(length & LENGTH_MASK);
-            if (length > 0)
+            newStr.shortStr.tag = static_cast<std::uint8_t>(strSize & LENGTH_MASK);
+            if (strSize > 0)
             {
-                std::memcpy(shortStr.data, cstr, length);
+                std::memcpy(newStr.shortStr.data, cstr, strSize);
             }
 			// else empty string
         }
         else
         {
             // Long string
-            longStr.tag = LONG_MASK; // set MSB=1
-            longStr.length = static_cast<std::uint32_t>(length);
+            newStr.longStr.tag = LONG_MASK; // set MSB=1
+            newStr.longStr.strSize = static_cast<std::uint32_t>(strSize);
 
-            char* buf = new (std::nothrow) char[length]; // no terminator stored
+            char* buf = new (std::nothrow) char[strSize]; // no terminator stored
             if (buf)
             {
-                std::memcpy(buf, cstr, length);
+                std::memcpy(buf, cstr, strSize);
                 // Store pointer directly; width matches platform.
-                longStr.ptr = buf;
+                newStr.longStr.ptr = buf;
             }
             else
             {
                 // Allocation failed: fall back to empty string
-                str.firstHalf = 0;
-                str.secondHalf = 0;
+                newStr.str.firstHalf = 0;
+                newStr.str.secondHalf = 0;
             }
         }
 
-		return;
+		return newStr;
     }
 
     // delete the long string buffer if any
-    // zero the long or short length
+	// initialize to empty string
     void String::Finalize(bool isOwner) noexcept
     {
 		if (isOwner && isLong() && longStr.ptr != nullptr)

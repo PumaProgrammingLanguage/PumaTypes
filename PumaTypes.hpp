@@ -13,11 +13,17 @@ namespace Types
     {
     public:
         // Public API
-        std::uint32_t Length() const noexcept;
+		// get str length - length in characters (code points)
+		std::uint32_t Length() const noexcept;
+		// get str size - length in bytes
+        std::uint32_t StrSize() const noexcept;
+		// get variable size - variable size in bytes
+        std::uint32_t VarSize() const noexcept;
 
-        // String factory, Initializes from a C-style string and returns the initialized string.
+        // String factory
+        // Initializes from a C-style string and returns the initialized string.
         // if cstr is null, return empty string
-        void Initialize(const char* cstr = NULL) noexcept;
+        static String initialize(const char* cstr = NULL) noexcept;
 
         // If is owner, releases heap storage for long strings.
         // Set to empty string
@@ -34,11 +40,11 @@ namespace Types
         struct { std::uint8_t tag; char data[15]; } shortStr;
 
     #if INTPTR_MAX == INT64_MAX
-        struct { std::uint8_t tag; std::uint8_t reserved[3]; std::uint32_t length; const char* ptr; } longStr;
+        struct { std::uint8_t tag; std::uint8_t reserved[3]; std::uint32_t strSize; const char* ptr; } longStr;
     #elif INTPTR_MAX == INT32_MAX
-        struct { std::uint8_t tag; std::uint8_t reserved[3]; std::uint32_t length; std::uint32_t reserved2; const char* ptr; } longStr;
+        struct { std::uint8_t tag; std::uint8_t reserved[3]; std::uint32_t strSize; std::uint32_t reserved2; const char* ptr; } longStr;
     #else
-    #error Unsupported pointer length
+    #error Unsupported pointer size
     #endif
 		// copy union
         struct { std::uint64_t firstHalf; std::uint64_t secondHalf; } str;
