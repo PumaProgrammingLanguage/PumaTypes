@@ -24,19 +24,16 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PumaTypes.hpp">
+    <ClInclude Include="String.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PumaTypes.cpp">
+    <ClCompile Include="String.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\puma-compiler-phase-1d\Puma.Tests\StringTests.cpp">
-      <Filter>PumaTypes.Tests</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
