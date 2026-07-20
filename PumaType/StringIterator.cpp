@@ -58,16 +58,16 @@ namespace Type
         return Character(_current);
     }
 
-    // Add raw byte offset (no UTF-8 awareness)
-    StringIterator StringIterator::operator+(std::uint32_t offset) const noexcept
-    {
-        if (!_current)
-        {
-            return StringIterator();
-        }
+    //// Add raw byte offset (no UTF-8 awareness)
+    //StringIterator StringIterator::operator+(std::uint32_t offset) const noexcept
+    //{
+    //    if (!_current)
+    //    {
+    //        return StringIterator();
+    //    }
 
-        return StringIterator(_current + offset, _limit);
-    }
+    //    return StringIterator(_current + offset, _limit);
+    //}
 
     // Prefix increment - move forward one UTF-8 character
     StringIterator& StringIterator::operator++() noexcept

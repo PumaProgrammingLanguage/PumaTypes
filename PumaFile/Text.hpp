@@ -4,7 +4,7 @@
 #pragma once
 
 #include "../PumaType/String.hpp"
-#include "../PumaType/Charactor.hpp"
+#include "../PumaType/Character.hpp"
 #include <cstdio>
 #include <cstdint>
 
@@ -44,12 +44,12 @@ namespace File
         Type::String ReadLn() noexcept;
         // Writes text to the file
         bool Write(const Type::String& text) noexcept;
-        // Writes a single Charactor to the file
-        bool Write(const Type::Charactor& ch) noexcept;
+        // Writes a single Character to the file
+        bool Write(const Type::Character& ch) noexcept;
         // Writes text followed by a newline to the file
         bool WriteLn(const Type::String& text) noexcept;
-        // Writes a single Charactor followed by a newline to the file
-        bool WriteLn(const Type::Charactor& ch) noexcept;
+        // Writes a single Character followed by a newline to the file
+        bool WriteLn(const Type::Character& ch) noexcept;
 
     private:
         // Opens the file at path with mode (default is READ_WRITE)

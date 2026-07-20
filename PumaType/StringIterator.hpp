@@ -27,8 +27,8 @@ namespace Type
         // Dereference - returns current UTF-8 code unit pointer
         const Character operator*() const noexcept;
 
-        // Add raw byte offset (no UTF-8 awareness, just pointer math)
-        StringIterator operator+(std::uint32_t offset) const noexcept;
+        //// Add raw byte offset (no UTF-8 awareness, just pointer math)
+        //StringIterator operator+(std::uint32_t offset) const noexcept;
 
         // Prefix increment / decrement - move by one UTF-8 character
         StringIterator& operator++() noexcept;

@@ -56,33 +56,33 @@ namespace Type
     }
 
     // Less-than operator for ordering (e.g., for sorting)
-    bool operator<(const Character& other) const noexcept
+    bool Character::operator<(const Character& other) const noexcept
 	{
 	    // Compare whole character
 		return codePoint < other.codePoint;
 	}
     // Greater-than operator for ordering
-    bool operator>(const Character& other) const noexcept
+    bool Character::operator>(const Character& other) const noexcept
     {
 		return codePoint > other.codePoint;
     }
     // Equality
-    bool operator==(const Character& other) const noexcept
+    bool Character::operator==(const Character& other) const noexcept
     {
         return codePoint == other.codePoint;
     }
     // Inequality
-    bool operator!=(const Character& other) const noexcept
+    bool Character::operator!=(const Character& other) const noexcept
     {
         return codePoint != other.codePoint;
     }
     // Less-than-or-equal operator for ordering
-    bool operator<=(const Character& other) const noexcept
+    bool Character::operator<=(const Character& other) const noexcept
     {
         return codePoint <= other.codePoint;
     }
     // Greater-than-or-equal operator for ordering
-    bool operator>=(const Character& other) const noexcept
+    bool Character::operator>=(const Character& other) const noexcept
     {
         return codePoint >= other.codePoint;
     }
