@@ -53,6 +53,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="$(ProjectDir)..\PumaInstall.props" Condition="Exists('$(ProjectDir)..\PumaInstall.props')" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
@@ -154,6 +155,7 @@
     </ClCompile>
     <ClCompile Include="Text.cpp" />
   </ItemGroup>
+    <Import Project="$(ProjectDir)..\PumaInstall.targets" Condition="Exists('$(ProjectDir)..\PumaInstall.targets')" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

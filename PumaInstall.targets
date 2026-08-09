@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="CopyPumaPublicHeaders" AfterTargets="Build">
+	<ItemGroup>
+	  <PumaPublicHeaders Include="@(ClInclude)" Condition="'%(ClInclude.Filename)' != 'pch' and '%(ClInclude.Filename)' != 'framework'" />
+	</ItemGroup>
+	<MakeDir Directories="$(PumaIncludeDir)" Condition="'@(PumaPublicHeaders)' != ''" />
+	<Copy SourceFiles="@(PumaPublicHeaders)" DestinationFolder="$(PumaIncludeDir)" SkipUnchangedFiles="true" Condition="'@(PumaPublicHeaders)' != ''" />
+  </Target>
+</Project>
