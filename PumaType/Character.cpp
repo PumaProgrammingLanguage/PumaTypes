@@ -20,8 +20,7 @@
 #include <cstddef>
 #include <cstring>
 
-namespace Puma {
-namespace Type
+namespace PumaType
 {
     namespace
     {
@@ -124,5 +123,4 @@ namespace Type
     {
         return UTF8CharSizeLookup[firstCodeUnit >> 3];
     }
-} // namespace Type
-} // namespace Puma
+} // namespace PumaType

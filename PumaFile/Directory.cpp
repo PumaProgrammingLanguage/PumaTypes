@@ -1,4 +1,4 @@
-// Standard library for the Puma programming language
+﻿// Standard library for the Puma programming language
 //   
 // Copyright © 2026 by Darryl Anthony Burchfield
 //
@@ -22,31 +22,30 @@
 
 using namespace std;
 
-namespace Puma {
-namespace File
+namespace PumaFile
 {
 	namespace Directory
 	{
 		// Get current working directory - normalized to forward slashes
-        Type::String GetCurrentDirectory() noexcept
+        PumaType::String GetCurrentDirectory() noexcept
 		{
 			error_code ec;
 			const filesystem::path path = filesystem::current_path(ec);
 			// On error, return empty string
 			if (ec)
 			{
-             return Type::String();
+             return PumaType::String();
 			}
 
 			// Normalize to forward slashes - Puma does not support backslashes
 			string normalizedPath = path.string();
 			replace(normalizedPath.begin(), normalizedPath.end(), '\\', '/');
-          // Return as Type::String
-			return Type::String(normalizedPath.data(), normalizedPath.size());
+          // Return as PumaType::String
+			return PumaType::String(normalizedPath.data(), normalizedPath.size());
 		}
 
 		// Set current working directory - normalized to forward slashes
-     static bool SetCurrentDirectory(const Type::String& path) noexcept
+     static bool SetCurrentDirectory(const PumaType::String& path) noexcept
 		{
 			const uint32_t pathSize = path.Size();
 			// Empty path is invalid
@@ -64,5 +63,4 @@ namespace File
 			return !ec;
 		}
 	} // namespace Directory
-} // namespace File
-} // namespace Puma
+} // namespace PumaFile

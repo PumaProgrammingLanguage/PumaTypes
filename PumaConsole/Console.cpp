@@ -1,4 +1,4 @@
-// Standard library for the Puma programming language
+﻿// Standard library for the Puma programming language
 //   
 // Copyright © 2026 by Darryl Anthony Burchfield
 //
@@ -32,8 +32,7 @@ namespace
 
 using namespace std;
 
-namespace Puma {
-namespace Console
+namespace PumaConsole
 {
     CommandPrompt* commandPrompt = nullptr;
 
@@ -59,7 +58,7 @@ namespace Console
     }
 
     // Writes a Puma String to standard output
-    void Write(const Type::String& str) noexcept
+    void Write(const PumaType::String& str) noexcept
     {
         const uint32_t strSize = str.Size();
 
@@ -98,14 +97,14 @@ namespace Console
     }
 
     // Writes a single Puma Character to standard output
-    void Write(const Type::Character& ch) noexcept
+    void Write(const PumaType::Character& ch) noexcept
     {
-        const Type::String tmp = ch.ToString();
+        const PumaType::String tmp = ch.ToString();
         Write(tmp);
     }
 
     // Writes a Puma String to standard output followed by a newline
-    void WriteLn(const Type::String& str) noexcept
+    void WriteLn(const PumaType::String& str) noexcept
     {
         Write(str);
 		// Add newline, does not flush
@@ -130,11 +129,11 @@ namespace Console
             return;
         }
 
-        WriteLn(Type::String(cstr, strlen(cstr)));
+        WriteLn(PumaType::String(cstr, strlen(cstr)));
     }
 
     // Writes a single Puma Character followed by a newline
-    void WriteLn(const Type::Character& ch) noexcept
+    void WriteLn(const PumaType::Character& ch) noexcept
     {
         Write(ch);
         Write("\n");
@@ -146,29 +145,29 @@ namespace Console
     }
 
     // Reads the next whitespace-delimited token from standard input
-    Type::String Read() noexcept
+    PumaType::String Read() noexcept
     {
         string buffer;
         if (!(cin >> buffer))
         {
             cin.clear();
-            return Type::String();
+            return PumaType::String();
         }
 
-        return Type::String(buffer.c_str(), buffer.size());
+        return PumaType::String(buffer.c_str(), buffer.size());
     }
 
     // Reads the next line from standard input (newline excluded)
-    Type::String ReadLn() noexcept
+    PumaType::String ReadLn() noexcept
     {
         string buffer;
         if (!getline(cin, buffer))
         {
             cin.clear();
-            return Type::String();
+            return PumaType::String();
         }
 
-        return Type::String(buffer.c_str(), buffer.size());
+        return PumaType::String(buffer.c_str(), buffer.size());
     }
 
     // Initializes console IO (UTF-8, unsynced stdio)
@@ -208,5 +207,4 @@ namespace Console
         // Hide command prompt
 		m_visible = false;
 	}
-} // namespace Console
-} // namespace Puma
+} // namespace PumaConsole

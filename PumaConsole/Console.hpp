@@ -1,4 +1,4 @@
-// Standard library for the Puma programming language
+﻿// Standard library for the Puma programming language
 //   
 // Copyright © 2026 by Darryl Anthony Burchfield
 //
@@ -22,8 +22,7 @@
 #include "../PumaType/Character.hpp"
 #include <cstdint>
 
-namespace Puma {
-namespace Console
+namespace PumaConsole
 {
     // Initializes console IO (UTF-8, unsynced stdio)
     void Initialize() noexcept;
@@ -32,7 +31,7 @@ namespace Console
     void Finalize() noexcept;
 
     // Writes a Puma String to standard output
-    void Write(const Type::String& str) noexcept;
+    void Write(const PumaType::String& str) noexcept;
 
     // Writes a uint8_t string to standard output
     void Write(const uint8_t* str, const uint32_t size) noexcept;
@@ -41,25 +40,25 @@ namespace Console
     void Write(const char* cstr) noexcept;
 
     // Writes a single Puma Character to standard output
-    void Write(const Type::Character& ch) noexcept;
+    void Write(const PumaType::Character& ch) noexcept;
 
     // Writes a Puma String to standard output followed by a newline
-    void WriteLn(const Type::String& str) noexcept;
+    void WriteLn(const PumaType::String& str) noexcept;
 
     // Writes a C-string to standard output followed by a newline
     void WriteLn(const char* cstr) noexcept;
 
     // Writes a single Puma Character followed by a newline
-    void WriteLn(const Type::Character& ch) noexcept;
+    void WriteLn(const PumaType::Character& ch) noexcept;
 
     // Flushes the standard output buffer
     void Flush() noexcept;
 
     // Reads the next whitespace-delimited token from standard input
-    Type::String Read() noexcept;
+    PumaType::String Read() noexcept;
 
     // Reads the next line from standard input (newline excluded)
-    Type::String ReadLn() noexcept;
+    PumaType::String ReadLn() noexcept;
 
     class CommandPrompt
     {
@@ -71,7 +70,6 @@ namespace Console
         // Internal state
         bool m_visible;
     };
-} // namespace Console
-} // namespace Puma
+} // namespace PumaConsole
 
 #endif // PUMA_CONSOLE_CONSOLE_HPP

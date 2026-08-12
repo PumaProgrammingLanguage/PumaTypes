@@ -1,4 +1,4 @@
-// Standard library for the Puma programming language
+﻿// Standard library for the Puma programming language
 //   
 // Copyright © 2026 by Darryl Anthony Burchfield
 //
@@ -23,8 +23,7 @@
 #include <cstdio>
 #include <cstdint>
 
-namespace Puma {
-namespace File
+namespace PumaFile
 {
     class Text final
     {
@@ -46,7 +45,7 @@ namespace File
         // Default constructor
         Text() noexcept;
         // Open file at path with mode (default is READ_WRITE)
-        Text(const Type::String& path, OpenMode mode = OpenMode::READ_WRITE) noexcept;
+        Text(const PumaType::String& path, OpenMode mode = OpenMode::READ_WRITE) noexcept;
         ~Text() noexcept;
         // Assign from another Text
         Text& operator=(Text&& other) noexcept;
@@ -54,28 +53,27 @@ namespace File
         bool IsOpen() const noexcept;
 
         // Reads the next whitespace-delimited word from the file
-        Type::String Read() noexcept;
+        PumaType::String Read() noexcept;
         // Reads the next line from the file (newline excluded)
-        Type::String ReadLn() noexcept;
+        PumaType::String ReadLn() noexcept;
         // Writes text to the file
-        bool Write(const Type::String& text) noexcept;
+        bool Write(const PumaType::String& text) noexcept;
         // Writes a single Character to the file
-        bool Write(const Type::Character& ch) noexcept;
+        bool Write(const PumaType::Character& ch) noexcept;
         // Writes text followed by a newline to the file
-        bool WriteLn(const Type::String& text) noexcept;
+        bool WriteLn(const PumaType::String& text) noexcept;
         // Writes a single Character followed by a newline to the file
-        bool WriteLn(const Type::Character& ch) noexcept;
+        bool WriteLn(const PumaType::Character& ch) noexcept;
 
     private:
         // Opens the file at path with mode (default is READ_WRITE)
-        bool open(const Type::String& path, OpenMode mode) noexcept;
+        bool open(const PumaType::String& path, OpenMode mode) noexcept;
         // Closes the file if open
         void close() noexcept;
 
         std::FILE* handle;
         bool adjustPosition;
     };
-} // namespace File
-} // namespace Puma
+} // namespace PumaFile
 
 #endif // PUMA_FILE_TEXT_HPP

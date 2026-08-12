@@ -27,8 +27,7 @@
 
 using namespace std;
 
-namespace Puma {
-namespace Type
+namespace PumaType
 {
 #pragma pack(push, 1)
     union String
@@ -134,7 +133,6 @@ namespace Type
     };
 #pragma pack(pop)
 
-} // namespace Type
-} // namespace Puma
+} // namespace PumaType
 
 #endif // PUMA_TYPE_STRING_HPP

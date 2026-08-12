@@ -1,4 +1,4 @@
-// Standard library for the Puma programming language
+﻿// Standard library for the Puma programming language
 //   
 // Copyright © 2026 by Darryl Anthony Burchfield
 //
@@ -20,18 +20,16 @@
 
 #include "../PumaType/String.hpp"
 
-namespace Puma {
-namespace File
+namespace PumaFile
 {
     namespace Directory
     {
         // Get current working directory - normalized to forward slashes
-        Type::String GetCurrentDirectory() noexcept;
+        PumaType::String GetCurrentDirectory() noexcept;
 
         // Set current working directory - accepts a Puma String path
-        bool SetCurrentDirectory(const Type::String& path) noexcept;
+        bool SetCurrentDirectory(const PumaType::String& path) noexcept;
     } // namespace Directory
-} // namespace File
-} // namespace Puma
+} // namespace PumaFile
 
 #endif // PUMA_FILE_DIRECTORY_HPP

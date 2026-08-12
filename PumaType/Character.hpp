@@ -20,8 +20,7 @@
 
 #include <cstdint>
 
-namespace Puma {
-namespace Type
+namespace PumaType
 {
     // Forward declaration to avoid circular include with String.hpp
     union String;
@@ -71,7 +70,6 @@ namespace Type
         // Packed 32-bit representation of the same 4 bytes
         uint32_t codePoint;
     };
-} // namespace Type
-} // namespace Puma
+} // namespace PumaType
 
 #endif // PUMA_TYPE_CHARACTER_HPP
