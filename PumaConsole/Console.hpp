@@ -3,12 +3,11 @@
 
 #pragma once
 
-#include "../PumaTypes/String.hpp"
-#include "../PumaTypes/Charactor.hpp"
+#include "../PumaType/String.hpp"
+#include "../PumaType/Charactor.hpp"
 #include <cstdint>
 
-namespace Puma {
-namespace Console
+namespace PumaConsole
 {
     // Initializes console IO (UTF-8, unsynced stdio)
     void Initialize() noexcept;
@@ -17,7 +16,7 @@ namespace Console
     void Finalize() noexcept;
 
     // Writes a Puma String to standard output
-    void Write(const Type::String& str) noexcept;
+    void Write(const PumaType::String& str) noexcept;
 
     // Writes a uint8_t string to standard output
     void Write(const uint8_t* str, const uint32_t size) noexcept;
@@ -26,25 +25,25 @@ namespace Console
     void Write(const char* cstr) noexcept;
 
     // Writes a single Puma Charactor to standard output
-    void Write(const Type::Charactor& ch) noexcept;
+    void Write(const PumaType::Charactor& ch) noexcept;
 
     // Writes a Puma String to standard output followed by a newline
-    void WriteLn(const Type::String& str) noexcept;
+    void WriteLn(const PumaType::String& str) noexcept;
 
     // Writes a C-string to standard output followed by a newline
     void WriteLn(const char* cstr) noexcept;
 
     // Writes a single Puma Charactor followed by a newline
-    void WriteLn(const Type::Charactor& ch) noexcept;
+    void WriteLn(const PumaType::Charactor& ch) noexcept;
 
     // Flushes the standard output buffer
     void Flush() noexcept;
 
     // Reads the next whitespace-delimited token from standard input
-    Type::String Read() noexcept;
+    PumaType::String Read() noexcept;
 
     // Reads the next line from standard input (newline excluded)
-    Type::String ReadLn() noexcept;
+    PumaType::String ReadLn() noexcept;
 
     class CommandPrompt
     {
@@ -56,7 +55,6 @@ namespace Console
         // Internal state
         bool m_visible;
     };
-} // namespace Console
-} // namespace Puma
+} // namespace PumaConsole
 
 #endif // PUMA_CONSOLE_CONSOLE_HPP

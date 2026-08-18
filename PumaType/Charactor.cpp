@@ -4,8 +4,7 @@
 #include "String.hpp" // needed for Charactor::ToString()
 #include <cstddef>
 
-namespace Puma {
-namespace Type
+namespace PumaType
 {
 	namespace
 	{
@@ -76,5 +75,4 @@ namespace Type
 	{
 		return UTF8CharSizeLookup[c >> 3];
 	}
-} // namespace Type
-} // namespace Puma
+} // namespace PumaType

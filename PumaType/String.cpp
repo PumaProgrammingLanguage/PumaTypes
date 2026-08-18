@@ -6,8 +6,7 @@
 #include <memory.h>
 #include <new>
 
-namespace Puma {
-namespace Type
+namespace PumaType
 {
 
 	// Default-constructs an empty String (no heap allocation).
@@ -292,5 +291,4 @@ namespace Type
 		return prevIt;
 	}
 
-} // namespace Type
-} // namespace Puma
+} // namespace PumaType

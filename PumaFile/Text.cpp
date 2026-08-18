@@ -4,11 +4,10 @@
 #include <algorithm>
 #include <string>
 
-namespace Puma {
-namespace File
+namespace PumaFile
 {
 	// Open file at path with mode (default is READ_WRITE)
-   Text::Text(const Type::String& path, OpenMode mode) noexcept
+   Text::Text(const PumaType::String& path, OpenMode mode) noexcept
 		: handle(nullptr), adjustPosition(false)
 	{
 		open(path, mode);
@@ -33,7 +32,7 @@ namespace File
 	}
 
 	// Opens the file at path with mode (default is READ_WRITE)
-  bool Text::open(const Type::String& path, OpenMode mode) noexcept
+  bool Text::open(const PumaType::String& path, OpenMode mode) noexcept
 	{
 		if (path.Size() == 0)
 		{
@@ -96,7 +95,7 @@ namespace File
 	}
 
 	// Reads the next whitespace-delimited word from the file
- Type::String Text::Read() noexcept
+ PumaType::String Text::Read() noexcept
 	{
 		if (handle != nullptr)
 		{
@@ -111,17 +110,17 @@ namespace File
 				buffer[1023] = '\0';
 				result = buffer;
 			}
-         return Type::String(result.data(), result.size());
+         return PumaType::String(result.data(), result.size());
 		}
 		else
 		{
 			// File not open
-         return Type::String();
+         return PumaType::String();
 		}
 	}
 
 	// Read until end of line or end of file
-   Type::String Text::ReadLn() noexcept
+   PumaType::String Text::ReadLn() noexcept
 	{
 		if (handle != nullptr)
 		{
@@ -132,17 +131,17 @@ namespace File
 				result += buffer;
 			}
 
-         return Type::String(result.data(), result.size());
+         return PumaType::String(result.data(), result.size());
 		}
 		else
 		{
 			// File not open
-         return Type::String();
+         return PumaType::String();
 		}
 	}
 
 	// Writes text to the file
-    bool Text::Write(const Type::String& text) noexcept
+    bool Text::Write(const PumaType::String& text) noexcept
 	{
 		if (handle == nullptr)
 		{
@@ -160,14 +159,14 @@ namespace File
 	}
 
 	// Writes a single Charactor to the file
-   bool Text::Write(const Type::Charactor& ch) noexcept
+   bool Text::Write(const PumaType::Charactor& ch) noexcept
 	{
 		// Convert Charactor to a one-character String and reuse existing Write
 		return Write(ch.ToString());
 	}
 
 	// Writes text followed by a newline to the file
-  bool Text::WriteLn(const Type::String& text) noexcept
+  bool Text::WriteLn(const PumaType::String& text) noexcept
 	{
 		if (!Write(text))
 		{
@@ -178,7 +177,7 @@ namespace File
 	}
 
 	// Writes a single Charactor followed by a newline to the file
- bool Text::WriteLn(const Type::Charactor& ch) noexcept
+ bool Text::WriteLn(const PumaType::Charactor& ch) noexcept
 	{
 		if (!Write(ch))
 		{
@@ -188,5 +187,4 @@ namespace File
 		return fputc('\n', handle) != EOF;
 	}
 
-} // namespace File
-} // namespace Puma
+} // namespace PumaFile

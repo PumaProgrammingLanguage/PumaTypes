@@ -8,8 +8,7 @@
 
 using namespace std;
 
-namespace Puma {
-namespace Type
+namespace PumaType
 {
     struct StringIterator
     {
@@ -46,7 +45,6 @@ namespace Type
         const uint8_t* _limit;
     };
 
-} // namespace Type
-} // namespace Puma
+} // namespace PumaType
 
 #endif // PUMA_TYPES_STRINGITERATOR_HPP

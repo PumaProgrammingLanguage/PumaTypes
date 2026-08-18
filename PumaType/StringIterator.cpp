@@ -4,8 +4,7 @@
 #include "StringIterator.hpp"
 #include "String.hpp"
 
-namespace Puma {
-namespace Type
+namespace PumaType
 {
 
     // Default constructor - creates an invalid iterator
@@ -134,5 +133,4 @@ namespace Type
         return _current != nullptr;
     }
 
-} // namespace Type
-} // namespace Puma
+} // namespace PumaType
