@@ -73,6 +73,16 @@
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup>
+    <PostBuildEvent>
+      <Command>if not exist "$(USERPROFILE)\Puma\lib\$(Platform)\$(Configuration)\" mkdir "$(USERPROFILE)\Puma\lib\$(Platform)\$(Configuration)"
+copy /Y "$(TargetPath)" "$(USERPROFILE)\Puma\lib\$(Platform)\$(Configuration)\"
+if not exist "$(USERPROFILE)\Puma\include\PumaType\" mkdir "$(USERPROFILE)\Puma\include\PumaType"
+copy /Y "$(ProjectDir)Charactor.hpp" "$(USERPROFILE)\Puma\include\PumaType\"
+copy /Y "$(ProjectDir)String.hpp" "$(USERPROFILE)\Puma\include\PumaType\"
+copy /Y "$(ProjectDir)StringIterator.hpp" "$(USERPROFILE)\Puma\include\PumaType\"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>

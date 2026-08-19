@@ -73,6 +73,14 @@
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup>
+    <PostBuildEvent>
+      <Command>if not exist "$(USERPROFILE)\Puma\lib\$(Platform)\$(Configuration)\" mkdir "$(USERPROFILE)\Puma\lib\$(Platform)\$(Configuration)"
+copy /Y "$(TargetPath)" "$(USERPROFILE)\Puma\lib\$(Platform)\$(Configuration)\"
+if not exist "$(USERPROFILE)\Puma\include\PumaConsole\" mkdir "$(USERPROFILE)\Puma\include\PumaConsole"
+copy /Y "$(ProjectDir)Console.hpp" "$(USERPROFILE)\Puma\include\PumaConsole\"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
